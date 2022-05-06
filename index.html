@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="static/script.js"></script>
+    <title>TikTok TTS</title>
+    <style>
+        #funny:hover {
+            opacity: 0;
+            transition: opacity 1s ease-out 100ms
+        }
+        #funny {
+            transition: opacity 1s ease-in 100ms
+        }
+    </style>
+</head>
+<body class="flex flex-col" style="background-color: #fbfbfb">
+    <div class="bg-stone-100 p-12 grow">
+        <img src="static/tiktok_logo.png" width="64px" height="64px" class="mx-auto"/>
+        <h1 class="text-6xl font-bold text-center">
+            TikTok TTS
+        </h1>
+        <p class="text-center pt-6">Generate the <span id="funny">funny</span> TiKTok lady voice <sup>(& more)</sup> in your browser</p>
+    </div>
+    <div class="bg-slate-200 mt-11 p-11 mx-auto h-2/4 w-2/4 rounded">
+        <form onsubmit="event.preventDefault(); submitForm()">
+            <label for="text" hidden>Text to generate into speech</label>
+            <textarea id="text" name="text" placeholder="The fungus among us." class="h-full w-full rounded p-2 bg-slate-100"></textarea><br/>
+            <div class="mt-2">
+                <label for="voice" hidden>Voice to use</label>
+                <select name="voice" id="voice" class="rounded p-1 bg-slate-100">
+                    <option value="en_us_001">English US - Female</option>
+                    <option value="en_us_006">English US - Male 1</option>
+                    <option value="en_us_007">English US - Male 2</option>
+                    <option value="en_us_009">English US - Male 3</option>
+                    <option value="en_us_010">English US - Male 4</option>
+
+                    <option value="en_uk_001">English UK - Male 1</option>
+                    <option value="en_uk_003">English UK - Male 2</option>
+
+                    <option value="en_au_001">English AU - Female</option>
+                    <option value="en_au_002">English AU - Male</option>
+
+                    <option value="fr_001">French - Male 1</option>
+                    <option value="fr_002">French - Male 2</option>
+
+                    <option value="de_001">German - Female</option>
+                    <option value="de_002">German - Male</option>
+
+                    <option value="es_002">Spanish - Male</option>
+
+                    <option value="es_mx_002">Spanish MX - Male</option>
+                    <option value="br_001">Portuguese BR - Female 1</option>
+                    <option value="br_003">Portuguese BR - Female 2</option>
+                    <option value="br_004">Portuguese BR - Female 3</option>
+                    <option value="br_005">Portuguese BR - Male</option>
+
+                    <option value="id_001">Indonesian - Female</option>
+
+                    <option value="jp_001">Japanese - Female 1</option>
+                    <option value="jp_003">Japanese - Female 2</option>
+                    <option value="jp_005">Japanese - Female 3</option>
+                    <option value="jp_006">Japanese - Male</option>
+
+                    <option value="kr_002">Korean - Male 1</option>
+                    <option value="kr_004">Korean - Male 2</option>
+                    <option value="kr_003">Korean - Female</option>
+
+                    <option value="en_us_ghostface">Ghostface (Scream)</option>
+                    <option value="en_us_chewbacca">Chewbacca (Star Trek)</option>
+                    <option value="en_us_c3po">C3PO (Star Wars)</option>
+                    <option value="en_us_stitch">Stitch (Lilo & Stitch)</option>
+                    <option value="en_us_stormtrooper">Stormtrooper (Star Wars)</option>
+                    <option value="en_us_rocket">Rocket (i forgor 💀)</option>
+                </select>
+                <button class="rounded bg-slate-100 p-1 float-right" id="submit">Generate</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="bg-red-200 mt-6 p-6 pt-3 mx-auto h-2/4 w-2/4 rounded" id="error" style="display: none">
+        <h1 class="text-center font-bold text-xl">Error</h1>
+        <p class="text-center" id="errortext">There was an error.</p>
+    </div>
+
+    <div class="bg-green-200 mt-6 p-6 pt-3 mx-auto h-2/4 w-2/4 rounded" id="success" style="display: none">
+        <h1 class="text-center font-bold text-xl">Success</h1>
+        <p class="text-center" id="generatedtext"></p>
+        <audio controls class="mx-auto mt-2" id="audio" src="">
+            Umm, update your browser.
+        </audio>
+    </div>
+</body>
+</html>
