@@ -39,7 +39,8 @@ const submitForm = () => {
 
     try {
         const req = new XMLHttpRequest()
-        req.open('POST', `${CORS_PROXY}${ENDPOINT}?text_speaker=${voice}&req_text=${encodeURIComponent(text)}`, false)
+        const final_uri = `${ENDPOINT}?text_speaker=${voice}&req_text=${encodeURIComponent(text)}`
+        req.open('POST', `${CORS_PROXY}${encodeURIComponent(final_uri)}`, false)
         req.send()
 
         let resp = JSON.parse(req.responseText)
