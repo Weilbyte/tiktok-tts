@@ -1,4 +1,5 @@
-const CORS_PROXY = 'https://warp-co.rs/'
+//const CORS_PROXY = 'https://warp-co.rs/'
+const CORS_PROXY = 'https://api.allorigins.win/raw?url=' // Temporary until warp-co.rs certificate is renewed
 const ENDPOINT = 'https://api16-normal-useast5.us.tiktokv.com/media/api/text/speech/invoke/'
 
 const setError = (message) => {
