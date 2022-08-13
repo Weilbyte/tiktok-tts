@@ -5,24 +5,24 @@ const ENDPOINT = 'https://api16-normal-useast5.us.tiktokv.com/media/api/text/spe
 const setError = (message) => {
     clearAudio()
     document.getElementById('error').style.display = 'block'
-    document.getElementById('errortext').innerHTML = message
+    document.getElementById('errortext').textContent = message
 }
 
 const clearError = () => {
     document.getElementById('error').style.display = 'none'
-    document.getElementById('errortext').innerHTML = 'There was an error.'
+    document.getElementById('errortext').textContent = 'There was an error.'
 }
 
 const setAudio = (base64, text) => {
     document.getElementById('success').style.display = 'block'
     document.getElementById('audio').src = `data:audio/mpeg;base64,${base64}`
-    document.getElementById('generatedtext').innerHTML = `"${text}"`
+    document.getElementById('generatedtext').textContent = `"${text}"`
 }
 
 const clearAudio = () => {
     document.getElementById('success').style.display = 'none'
     document.getElementById('audio').src = ``
-    document.getElementById('generatedtext').innerHTML = ''
+    document.getElementById('generatedtext').textContent = ''
 }
 
 const submitForm = () => {
