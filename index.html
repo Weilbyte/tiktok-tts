@@ -28,10 +28,10 @@
     <div class="bg-slate-200 mt-11 p-11 mx-auto h-2/4 w-2/4 rounded">
         <form onsubmit="event.preventDefault(); submitForm()">
             <label for="text" hidden>Text to generate into speech</label>
-            <textarea id="text" name="text" placeholder="The fungus among us." class="h-full w-full rounded p-2 bg-slate-100"></textarea><br/>
+            <textarea id="text" name="text" placeholder="The fungus among us." class="h-full w-full rounded p-2 bg-slate-100" disabled></textarea><br/>
             <div class="mt-2">
                 <label for="voice" hidden>Voice to use</label>
-                <select name="voice" id="voice" class="rounded p-1 bg-slate-100">
+                <select name="voice" id="voice" class="rounded p-1 bg-slate-100" disabled>
                     <option value="en_us_001">English US - Female</option>
                     <option value="en_us_006">English US - Male 1</option>
                     <option value="en_us_007">English US - Male 2</option>
@@ -81,7 +81,7 @@
                     <option value="en_male_m03_sunshine_soon">Sunshine Soon</option>
                     <option value="en_female_f08_warmy_breeze">Warmy Breeze</option>
                 </select>
-                <button class="rounded bg-slate-100 p-1 float-right" id="submit">Generate</button>
+                <button class="rounded bg-slate-100 p-1 float-right" id="submit" disabled>Generate</button>
             </div>
         </form>
     </div>
