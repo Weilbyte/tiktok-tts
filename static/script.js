@@ -78,7 +78,7 @@ const submitForm = () => {
 
         let resp = JSON.parse(req.responseText)
         if (resp.data === null) {
-            setError(`Generation failed, this has been logged (Generation ID ${resp.ga}) `)
+            setError(`Generation failed. Make sure your text is not too long. (Generation ID ${resp.ga})`)
         } else {
             setAudio(resp.data, text)
         }  
