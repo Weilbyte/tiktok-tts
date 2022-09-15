@@ -1,23 +1,27 @@
 const ENDPOINT = 'https://tiktok-tts.weilnet.workers.dev'
 
-const TTS_CHAR_LIMIT = 300
-
-let SESSION_ID = null
+const TEXT_BYTE_LIMIT = 300
+const textEncoder = new TextEncoder()
 
 window.onload = () => {
-    document.getElementById('text').setAttribute('maxlength', TTS_CHAR_LIMIT)
-
+    document.getElementById('charcount').textContent = `0/${TEXT_BYTE_LIMIT}`
     const req = new XMLHttpRequest()
-    req.open('GET', `${ENDPOINT}/session`, false)
+    req.open('GET', `${ENDPOINT}/api/status`, false)
     req.send()
 
     let resp = JSON.parse(req.responseText)
-    if (resp.available) {
-        SESSION_ID = resp.session_id
-        console.log(`Got SID ${SESSION_ID} from account pool ${resp.account_pool}`)
-        enableControls()
+    if (resp.data) {
+        if (resp.data.available) {
+            console.info(`${resp.data.meta.dc} (age ${resp.data.meta.age} minutes) is able to provide service`)
+            enableControls()
+        } else {
+            console.error(`${resp.data.meta.dc} (age ${resp.data.meta.age} minutes) is unable to provide service`)
+            setError(
+                `Service not available${resp.data.message && resp.data.message.length > 1 ? ` (<b>"${resp.data.message}"</b>)` : ''}, try again later or check the <a href='https://github.com/Weilbyte/tiktok-tts'>GitHub</a> repository for more info`
+                )
+        }
     } else {
-        setError(`Service not available, try again later or check the <a href='https://github.com/Weilbyte/tiktok-tts'>GitHub</a> repository for more info`)
+        setError('Error querying API status, try again later or check the <a href=\'https://github.com/Weilbyte/tiktok-tts\'>GitHub</a> repository for more info')
     }  
 }
 
@@ -56,47 +60,59 @@ const enableControls = () => {
     document.getElementById('submit').removeAttribute('disabled')
 }
 
+const onTextareaInput = () => {
+    const text = document.getElementById('text').value
+    const textEncoded = textEncoder.encode(text)
+
+    document.getElementById('charcount').textContent = `${textEncoded.length <= 999 ? textEncoded.length : 999}/${TEXT_BYTE_LIMIT}`
+
+    if (textEncoded.length > TEXT_BYTE_LIMIT) {
+        document.getElementById('charcount').style.color = 'red'
+    } else {
+        document.getElementById('charcount').style.color = 'black'
+    }
+}
+
 const submitForm = () => {
     clearError()
     clearAudio()
 
-    if (SESSION_ID === null) {
-        setError('Session ID missing, please reload page')
-        return
-    }
-
     disableControls()
 
     let text = document.getElementById('text').value
-    if (text.length === 0) text = 'The fungus among us.' 
+    const textLength = new TextEncoder().encode(text).length
+    console.log(textLength)
+
+    if (textLength === 0) text = 'The fungus among us.' 
     const voice = document.getElementById('voice').value
 
-    if (text.length > TTS_CHAR_LIMIT) {
-        setError(`Text must not be over ${TTS_CHAR_LIMIT} characters`)
+    if (textLength > TEXT_BYTE_LIMIT) {
+        setError(`Text must not be over ${TEXT_BYTE_LIMIT} UTF-8 chracters (currently at ${textLength})`)
         enableControls()
         return
     }
 
     try {
         const req = new XMLHttpRequest()
-        req.open('POST', `${ENDPOINT}/tts`, false)
+        req.open('POST', `${ENDPOINT}/api/generation`, false)
+        req.setRequestHeader('Content-Type', 'application/json')
         req.send(JSON.stringify({
-            session_id: SESSION_ID,
             text: text,
             voice: voice
         }))
 
         let resp = JSON.parse(req.responseText)
         if (resp.data === null) {
-            setError(`Generation <b>${resp.ga}</b> failed ("${resp.msg}")`)
+            setError(`<b>Generation failed</b><br/> ("${resp.error}")`)
         } else {
             setAudio(resp.data, text)
         }  
     } catch {
-        console.log(`SID: ${SESSION_ID}\nText: ${text}\nVoice: ${voice}`)
         setError('Error submitting form (printed to F12 console)')
         console.log('^ Please take a screenshot of this and create an issue on the GitHub repository if one does not already exist :)')
         console.log('If the error code is 503, the service is currently unavailable. Please try again later.')
+        console.log(`Voice: ${voice}`)
+        console.log(`Text: ${text}`)
     }
 
     enableControls()

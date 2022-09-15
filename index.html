@@ -28,7 +28,8 @@
     <div class="bg-slate-200 mt-11 p-11 mx-auto h-2/4 w-2/4 rounded">
         <form onsubmit="event.preventDefault(); submitForm()">
             <label for="text" hidden>Text to generate into speech</label>
-            <textarea id="text" name="text" placeholder="The fungus among us." class="h-full w-full rounded p-2 bg-slate-100" disabled></textarea><br/>
+            <p class="rounded bg-slate-100 h-8 w-16 text-center leading-8 mb-2 float-right" id="charcount">999/999</p>
+            <textarea id="text" name="text" placeholder="The fungus among us." oninput="onTextareaInput()" class="h-full w-full rounded p-2 bg-slate-100" disabled></textarea><br/>
             <div class="mt-2">
                 <label for="voice" hidden>Voice to use</label>
                 <select name="voice" id="voice" class="rounded p-1 bg-slate-100" disabled>
