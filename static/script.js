@@ -86,6 +86,12 @@ const submitForm = () => {
     if (textLength === 0) text = 'The fungus among us.' 
     const voice = document.getElementById('voice').value
 
+    if(voice == "none") {
+        setError("No voice has been selected");
+        enableControls()
+        return
+    }
+
     if (textLength > TEXT_BYTE_LIMIT) {
         setError(`Text must not be over ${TEXT_BYTE_LIMIT} UTF-8 chracters (currently at ${textLength})`)
         enableControls()
