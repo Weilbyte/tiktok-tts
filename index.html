@@ -15,6 +15,9 @@
         #funny {
             transition: opacity 1s ease-in 100ms
         }
+        .bold {
+            font-weight:bold;
+        }
     </style>
 </head>
 <body class="flex flex-col" style="background-color: #fbfbfb">
@@ -33,50 +36,78 @@
             <div class="mt-2">
                 <label for="voice" hidden>Voice to use</label>
                 <select name="voice" id="voice" class="rounded p-1 bg-slate-100" disabled>
-                    <option value="en_us_001">English US - Female</option>
-                    <option value="en_us_006">English US - Male 1</option>
-                    <option value="en_us_007">English US - Male 2</option>
-                    <option value="en_us_009">English US - Male 3</option>
-                    <option value="en_us_010">English US - Male 4</option>
+                    <option selected disabled hidden value="none">Select a voice</option>
 
-                    <option value="en_uk_001">English UK - Male 1</option>
-                    <option value="en_uk_003">English UK - Male 2</option>
+                    <option disabled class="bold">English US</option>
+                    <option value="en_us_001">Female</option>
+                    <option value="en_us_006">Male 1</option>
+                    <option value="en_us_007">Male 2</option>
+                    <option value="en_us_009">Male 3</option>
+                    <option value="en_us_010">Male 4</option>
+                    <option disabled></option>
 
-                    <option value="en_au_001">English AU - Female</option>
-                    <option value="en_au_002">English AU - Male</option>
+                    <option disabled class="bold">English UK</option>
+                    <option value="en_uk_001">Male 1</option>
+                    <option value="en_uk_003">Male 2</option>
+                    <option disabled></option>
 
-                    <option value="fr_001">French - Male 1</option>
-                    <option value="fr_002">French - Male 2</option>
+                    <option disabled class="bold">English AU</option>
+                    <option value="en_au_001">Female</option>
+                    <option value="en_au_002">Male</option>
+                    <option disabled></option>
 
-                    <option value="de_001">German - Female</option>
-                    <option value="de_002">German - Male</option>
+                    <option disabled class="bold">French</option>
+                    <option value="fr_001">Male 1</option>
+                    <option value="fr_002">Male 2</option>
+                    <option disabled></option>
 
-                    <option value="es_002">Spanish - Male</option>
+                    <option disabled class="bold">German</option>
+                    <option value="de_001">Female</option>
+                    <option value="de_002">Male</option>
+                    <option disabled></option>
 
-                    <option value="es_mx_002">Spanish MX - Male</option>
-                   <!-- <option value="br_001">Portuguese BR - Female 1</option> -->
-                    <option value="br_003">Portuguese BR - Female 2</option>
-                    <option value="br_004">Portuguese BR - Female 3</option>
-                    <option value="br_005">Portuguese BR - Male</option>
+                    <option disabled class="bold">Spanish</option>
+                    <option value="es_002">Male</option>
+                    <option disabled></option>
 
-                    <option value="id_001">Indonesian - Female</option>
+                    <option disabled class="bold">Spanish MX</option>
+                    <option value="es_mx_002">Male</option>
+                    <option disabled></option>
 
-                    <option value="jp_001">Japanese - Female 1</option>
-                    <option value="jp_003">Japanese - Female 2</option>
-                    <option value="jp_005">Japanese - Female 3</option>
-                    <option value="jp_006">Japanese - Male</option>
+                    <option disabled class="bold">Portuguese BR</option>
+                   <!-- <option value="br_001">Female 1</option> -->
+                    <option value="br_003">Female 2</option>
+                    <option value="br_004">Female 3</option>
+                    <option value="br_005">Male</option>
+                    <option disabled></option>
 
-                    <option value="kr_002">Korean - Male 1</option>
-                    <option value="kr_004">Korean - Male 2</option>
-                    <option value="kr_003">Korean - Female</option>
+                    <option disabled class="bold">Indonesian</option>
+                    <option value="id_001">Female</option>
+                    <option disabled></option>
 
+                    <option disabled class="bold">Japanese</option>
+                    <option value="jp_001">Female 1</option>
+                    <option value="jp_003">Female 2</option>
+                    <option value="jp_005">Female 3</option>
+                    <option value="jp_006">Male</option>
+                    <option disabled></option>
+
+					<option disabled class="bold">Korean</option>
+                    <option value="kr_002">Male 1</option>
+                    <option value="kr_004">Male 2</option>
+                    <option value="kr_003">Female</option>
+                    <option disabled></option>
+
+                    <option disabled class="bold">Characters</option>
                     <option value="en_us_ghostface">Ghostface (Scream)</option>
                     <option value="en_us_chewbacca">Chewbacca (Star Wars)</option>
                     <option value="en_us_c3po">C3PO (Star Wars)</option>
                     <option value="en_us_stitch">Stitch (Lilo & Stitch)</option>
                     <option value="en_us_stormtrooper">Stormtrooper (Star Wars)</option>
                     <option value="en_us_rocket">Rocket (Guardians of the Galaxy)</option>
+                    <option disabled></option>
 
+                    <option disabled class="bold">Singing</option>
                     <option value="en_female_f08_salut_damour">Alto</option>
                     <option value="en_male_m03_lobby">Tenor</option>
                     <option value="en_male_m03_sunshine_soon">Sunshine Soon</option>
