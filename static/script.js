@@ -30,19 +30,11 @@ const setError = (message) => {
     document.getElementById('errortext').innerHTML = message
 }
 
-const setLoading = () => {
-    document.getElementById('loading').style.display = 'block'
-}
-
-
 const clearError = () => {
     document.getElementById('error').style.display = 'none'
     document.getElementById('errortext').innerHTML = 'There was an error.'
 }
 
-const clearLoading = () => {
-    document.getElementById('loading').style.display = 'none'
-}
 
 const setAudio = (base64, text) => {
     document.getElementById('success').style.display = 'block'
@@ -125,7 +117,6 @@ const submitForm = () => {
                 text: text_array[i],
                 voice: voice
             }))
-            setLoading()
             let resp = JSON.parse(req.responseText)
             if (resp.data === null) {
                 setError(`<b>Generation failed</b><br/> ("${resp.error}")`)
@@ -136,10 +127,8 @@ const submitForm = () => {
           }
           console.log(text_array)
           final_audio=btoa(decoded_audio)
-          clearLoading()
           setAudio(final_audio, text)
     } catch {
-        clearLoading()
         setError('Error submitting form (printed to F12 console)')
         console.log('^ Please take a screenshot of this and create an issue on the GitHub repository if one does not already exist :)')
         console.log('If the error code is 503, the service is currently unavailable. Please try again later.')
