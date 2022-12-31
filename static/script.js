@@ -4,7 +4,7 @@ const TEXT_BYTE_LIMIT = 300
 const textEncoder = new TextEncoder()
 
 window.onload = () => {
-    document.getElementById('charcount').textContent = `0/${TEXT_BYTE_LIMIT}`
+    document.getElementById('charcount').textContent = `0`
     const req = new XMLHttpRequest()
     req.open('GET', `${ENDPOINT}/api/status`, false)
     req.send()
@@ -31,9 +31,18 @@ const setError = (message) => {
     document.getElementById('errortext').innerHTML = message
 }
 
+const setLoading = () => {
+    document.getElementById('loading').style.display = 'block'
+}
+
+
 const clearError = () => {
     document.getElementById('error').style.display = 'none'
     document.getElementById('errortext').innerHTML = 'There was an error.'
+}
+
+const clearLoading = () => {
+    document.getElementById('loading').style.display = 'none'
 }
 
 const setAudio = (base64, text) => {
@@ -64,7 +73,7 @@ const onTextareaInput = () => {
     const text = document.getElementById('text').value
     const textEncoded = textEncoder.encode(text)
 
-    document.getElementById('charcount').textContent = `${textEncoded.length <= 999 ? textEncoded.length : 999}/${TEXT_BYTE_LIMIT}`
+    document.getElementById('charcount').textContent = `${textEncoded.length}`
 
     if (textEncoded.length > TEXT_BYTE_LIMIT) {
         document.getElementById('charcount').style.color = 'red'
@@ -72,6 +81,24 @@ const onTextareaInput = () => {
         document.getElementById('charcount').style.color = 'black'
     }
 }
+
+function splitIntoSubstrings(str, maxLength) {
+    const substrings = [];
+    const words = str.split(/([^\w])/);
+    let currentSubstring = '';
+
+    for (const word of words) {
+      if (currentSubstring.length + word.length > maxLength) {
+        substrings.push(currentSubstring);
+        currentSubstring = '';
+      }
+      currentSubstring += word;
+    }
+    if (currentSubstring.length > 0) {
+      substrings.push(currentSubstring);
+    }
+    return substrings;
+  }
 
 const submitForm = () => {
     clearError()
@@ -100,20 +127,32 @@ const submitForm = () => {
 
     try {
         const req = new XMLHttpRequest()
-        req.open('POST', `${ENDPOINT}/api/generation`, false)
-        req.setRequestHeader('Content-Type', 'application/json')
-        req.send(JSON.stringify({
-            text: text,
-            voice: voice
-        }))
-
-        let resp = JSON.parse(req.responseText)
-        if (resp.data === null) {
-            setError(`<b>Generation failed</b><br/> ("${resp.error}")`)
-        } else {
-            setAudio(resp.data, text)
-        }  
+        var text_array=splitIntoSubstrings(text,300);
+        var decoded_audio;
+        var final_audio;
+        
+        for (var i = 0; i < text_array.length; i++) {
+            req.open('POST', `${ENDPOINT}/api/generation`, false)
+            req.setRequestHeader('Content-Type', 'application/json')
+            req.send(JSON.stringify({
+                text: text_array[i],
+                voice: voice
+            }))
+            setLoading()
+            let resp = JSON.parse(req.responseText)
+            if (resp.data === null) {
+                setError(`<b>Generation failed</b><br/> ("${resp.error}")`)
+            } else {
+                var decoded=atob(resp.data)
+                decoded_audio=decoded_audio+decoded
+            }  
+          }
+          console.log(text_array)
+          final_audio=btoa(decoded_audio)
+          clearLoading()
+          setAudio(final_audio, text)
     } catch {
+        clearLoading()
         setError('Error submitting form (printed to F12 console)')
         console.log('^ Please take a screenshot of this and create an issue on the GitHub repository if one does not already exist :)')
         console.log('If the error code is 503, the service is currently unavailable. Please try again later.')

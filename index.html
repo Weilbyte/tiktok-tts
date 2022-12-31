@@ -32,7 +32,7 @@
     <div class="bg-slate-200 md:mt-11 p-11 md:mx-auto h-2/4 md:w-3/5 md:rounded">
         <form onsubmit="event.preventDefault(); submitForm()">
             <label for="text" hidden>Text to generate into speech</label>
-            <p class="rounded bg-slate-100 h-8 w-16 text-center leading-8 mb-2 float-right" id="charcount">999/999</p>
+            <p class="rounded bg-slate-100 h-8 w-16 text-center leading-8 mb-2 float-right" id="charcount"></p>
             <textarea id="text" name="text" placeholder="The fungus among us." oninput="onTextareaInput()" class="h-full w-full rounded p-2 bg-slate-100" disabled></textarea><br/>
             <label for="voice" hidden>Voice to use</label>
             <select name="voice" id="voice" class="rounded p-1 bg-slate-100 mt-2 w-full sm:w-1/2" disabled>
@@ -124,6 +124,11 @@
     <div class="bg-red-200 md:mt-6 p-6 pt-3 md:mx-auto h-2/4 md:w-2/4 md:rounded" id="error" style="display: none">
         <h1 class="text-center font-bold text-xl">Error</h1>
         <p class="text-center" id="errortext">There was an error.</p>
+    </div>
+
+    <div class="bg-green-200 md:mt-6 p-6 pt-3 md:mx-auto h-2/4 md:w-2/4 md:rounded" id="loading" style="display: none">
+        <h1 class="text-center font-bold text-xl">Loading...</h1>
+        <p class="text-center">Please wait</p>
     </div>
 
     <div class="bg-green-200 md:mt-6 p-6 pt-3 md:mx-auto h-2/4 md:w-2/4 md:rounded" id="success" style="display: none">
