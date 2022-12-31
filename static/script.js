@@ -1,6 +1,5 @@
 const ENDPOINT = 'https://tiktok-tts.weilnet.workers.dev'
 
-const TEXT_BYTE_LIMIT = 300
 const textEncoder = new TextEncoder()
 
 window.onload = () => {
@@ -74,12 +73,6 @@ const onTextareaInput = () => {
     const textEncoded = textEncoder.encode(text)
 
     document.getElementById('charcount').textContent = `${textEncoded.length}`
-
-    if (textEncoded.length > TEXT_BYTE_LIMIT) {
-        document.getElementById('charcount').style.color = 'red'
-    } else {
-        document.getElementById('charcount').style.color = 'black'
-    }
 }
 
 function splitIntoSubstrings(str, maxLength) {
@@ -115,12 +108,6 @@ const submitForm = () => {
 
     if(voice == "none") {
         setError("No voice has been selected");
-        enableControls()
-        return
-    }
-
-    if (textLength > TEXT_BYTE_LIMIT) {
-        setError(`Text must not be over ${TEXT_BYTE_LIMIT} UTF-8 characters (currently at ${textLength})`)
         enableControls()
         return
     }
