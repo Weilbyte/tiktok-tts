@@ -1,0 +1,26 @@
+{
+  "name": "tiktok-tts",
+  "version": "1.0.0",
+  "description": "Generate TikTok Text-to-Speech voices in your browser",
+  "scripts": {
+    "test": "npx cypress run --headless --config video=false,screenshotOnRunFailure=false",
+    "build": "npx grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Weilbyte/tiktok-tts.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "homepage": "https://github.com/Weilbyte/tiktok-tts#readme",
+  "bugs": {
+    "url": "https://github.com/Weilbyte/tiktok-tts/issues"
+  },
+  "devDependencies": {
+    "cypress": "^12.9.0",
+    "grunt": "^1.6.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-htmlmin": "^3.1.0",
+    "grunt-contrib-uglify": "^5.2.2"
+  }
+}
