@@ -40,6 +40,7 @@ const setAudio = (base64, text) => {
     document.getElementById('success').style.display = 'block'
     document.getElementById('audio').src = `data:audio/mpeg;base64,${base64}`
     document.getElementById('generatedtext').innerHTML = `"${text}"`
+    document.getElementById('download').href = `data:audio/mpeg;base64,${base64}`
 }
 
 const clearAudio = () => {
@@ -84,7 +85,6 @@ const submitForm = () => {
     console.log(textLength)
 
     const successElement = document.getElementById('success');
-
 // Check if the element is found
 
 
@@ -117,6 +117,8 @@ const submitForm = () => {
             setError(`<b>Generation failed</b><br/> ("${resp.error}")`)
         } else {
             setAudio(resp.data, text);
+            //download appears to be broken
+            document.getElementById('download').style.display = "block";
             if (successElement) {
                 // Scroll to the element
                 successElement.scrollIntoView({

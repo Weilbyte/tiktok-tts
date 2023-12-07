@@ -49,7 +49,7 @@
         <p class="text-center pt-6">Generate the <span id="funny">funny</span> TikTok lady voice <sup>(& more)</sup> in
             your browser</p>
     </div>
-    <div class="usercontainer bg-[#1F2937] h-screen flex flex-col item-center gap-8 py-5 ">
+    <div class="usercontainer bg-[#1F2937] h-fit flex flex-col item-center gap-8 py-5 ">
         <div
             class="bg-[#FF0050] md:mt-11 p-11 md:mx-auto h-2/4 md:w-3/5 md:rounded mx-auto rounded-md border border-white border-opacity-30">
             <form onsubmit="event.preventDefault(); submitForm()">
@@ -150,14 +150,20 @@
                     disabled>Generate</button>
             </form>
         </div>
-        <div class="bg-blue-500 border border-white border-opacity-30 md:mt-11 p-11 md:mx-auto h-fit md:w-3/5 md:rounded mx-auto rounded-md border border-gray-900"
+        <div class="bg-blue-500 border border-white border-opacity-30 md:mt-11 px-11 py-10 md:mx-auto h-fit md:w-3/5 md:rounded mx-auto rounded-md border border-gray-900"
             id="success" style="display: block">
-            <h1 class="text-center font-bold text-xl">OUTPUT</h1>
+            <h1 class="text-center font-bold text-2xl">OUTPUT</h1>
             <p class="text-center" id="generatedtext"></p>
-            <audio autoplay controls class="mx-auto mt-2 bg-gray-800 backdrop-filter-md p-2 rounded-lg border border-white" id="audio"
+            <div class="playercontainer flex flex-col text-center gap-3 justify-center item-center">
+                <audio autoplay controls
+                class="mx-auto mt-2 border-gray-900 border bg-[#F1F3F4]  backdrop-filter-md p-2 rounded-lg " id="audio"
                 src="">
                 <p class="text-white">Umm, update your browser.</p>
             </audio>
+            <a id="download" href="" download style="display: none;"
+                class="bg-gray-900 px-3 py-2 rounded-md text-white w-[200px] m-auto border border-white border-opacity-50 transition duration-200"> <img src="/public/download.svg" class="text-white float-left w-6"/> Download</a>
+            </div>
+            
         </div>
         <div class="bg-blue-500 md:mt-11 p-11 md:mx-auto h-fit md:w-3/5 md:rounded mx-auto rounded-md border border-gray-900"
             id="error" style="display: none">
