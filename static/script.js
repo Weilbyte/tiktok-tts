@@ -40,6 +40,7 @@ const setAudio = (base64, text) => {
     document.getElementById('success').style.display = 'block'
     document.getElementById('audio').src = `data:audio/mpeg;base64,${base64}`
     document.getElementById('generatedtext').innerHTML = `"${text}"`
+    document.getElementById('download').href = `data:audio/mpeg;base64,${base64}`
 }
 
 const clearAudio = () => {
@@ -83,6 +84,10 @@ const submitForm = () => {
     const textLength = new TextEncoder().encode(text).length
     console.log(textLength)
 
+    const successElement = document.getElementById('success');
+// Check if the element is found
+
+
     if (textLength === 0) text = 'The fungus among us.' 
     const voice = document.getElementById('voice').value
 
@@ -111,7 +116,17 @@ const submitForm = () => {
         if (resp.data === null) {
             setError(`<b>Generation failed</b><br/> ("${resp.error}")`)
         } else {
-            setAudio(resp.data, text)
+            setAudio(resp.data, text);
+            //download appears to be broken
+            document.getElementById('download').style.display = "block";
+            if (successElement) {
+                // Scroll to the element
+                successElement.scrollIntoView({
+                    behavior: 'smooth', // You can use 'auto' or 'instant' for different scrolling behavior
+                    block: 'start',      // You can use 'start', 'center', or 'end'
+                    inline: 'nearest'    // You can use 'start', 'center', or 'end'
+                });
+            } 
         }  
     } catch {
         setError('Error submitting form (printed to F12 console)')
