@@ -1,0 +1,20 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT session_id FROM sessionids WHERE is_active = true;",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "session_id",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "f0d2840ceefef9c501c19961da90d0d8471c9925f78098536067959a0bb3f2cc"
+}

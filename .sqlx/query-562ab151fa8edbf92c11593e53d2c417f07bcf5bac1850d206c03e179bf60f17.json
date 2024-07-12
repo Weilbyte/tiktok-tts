@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE sessionids SET is_active = false WHERE session_id = $1;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "562ab151fa8edbf92c11593e53d2c417f07bcf5bac1850d206c03e179bf60f17"
+}

@@ -1,28 +1,19 @@
-const ENDPOINT = 'https://tiktok-tts.weilnet.workers.dev'
-
 const TEXT_BYTE_LIMIT = 300
 const textEncoder = new TextEncoder()
 
 window.onload = () => {
     document.getElementById('charcount').textContent = `0/${TEXT_BYTE_LIMIT}`
     const req = new XMLHttpRequest()
-    req.open('GET', `${ENDPOINT}/api/status`, false)
+    req.open('GET', `/api/status`, false)
     req.send()
 
-    let resp = JSON.parse(req.responseText)
-    if (resp.data) {
-        if (resp.data.available) {
-            console.info(`${resp.data.meta.dc} (age ${resp.data.meta.age} minutes) is able to provide service`)
-            enableControls()
-        } else {
-            console.error(`${resp.data.meta.dc} (age ${resp.data.meta.age} minutes) is unable to provide service`)
-            setError(
-                `Service not available${resp.data.message && resp.data.message.length > 1 ? ` (<b>"${resp.data.message}"</b>)` : ''}, try again later or check the <a href='https://github.com/Weilbyte/tiktok-tts'>GitHub</a> repository for more info`
-                )
-        }
+    if (req.status === 200) {
+        enableControls()
     } else {
-        setError('Error querying API status, try again later or check the <a href=\'https://github.com/Weilbyte/tiktok-tts\'>GitHub</a> repository for more info')
-    }  
+        setError(
+            `Service not available: ${req.responseText}`
+        )
+    }
 }
 
 const setError = (message) => {
@@ -39,12 +30,24 @@ const clearError = () => {
 const setAudio = (base64, text) => {
     document.getElementById('success').style.display = 'block'
     document.getElementById('audio').src = `data:audio/mpeg;base64,${base64}`
+    document.getElementById('audio-link').href = `data:audio/mpeg;base64,${base64}`
+
+    let now = new Date();
+    let day = now.getDate().toString().padStart(2, '0');
+    let hours = now.getHours().toString().padStart(2, '0');
+    let minutes = now.getMinutes().toString().padStart(2, '0');
+    let seconds = now.getSeconds().toString().padStart(2, '0');
+    let safeText = text.replace(/[<>:"\/\\|?*]+/g, '_').replaceAll(' ', '_').substring(0, 16);
+    document.getElementById('audio-link').download = `${day}${hours}${minutes}${seconds}_${safeText}.mp3`
+    document.getElementById('audio').download = `${day}${hours}${minutes}${seconds}_${safeText}.mp3`
     document.getElementById('generatedtext').innerHTML = `"${text}"`
 }
 
 const clearAudio = () => {
     document.getElementById('success').style.display = 'none'
-    document.getElementById('audio').src = ``
+    document.getElementById('audio').src = ''
+    document.getElementById('audio-link').href = ''
+    document.getElementById('audio-link').download = null
     document.getElementById('generatedtext').innerHTML = ''
 }
 
@@ -61,15 +64,14 @@ const enableControls = () => {
 }
 
 const onTextareaInput = () => {
-    const text = document.getElementById('text').value
-    const textEncoded = textEncoder.encode(text)
-
-    document.getElementById('charcount').textContent = `${textEncoded.length <= 999 ? textEncoded.length : 999}/${TEXT_BYTE_LIMIT}`
+    const textEncoded = textEncoder.encode(document.getElementById('text').value)
 
     if (textEncoded.length > TEXT_BYTE_LIMIT) {
-        document.getElementById('charcount').style.color = 'red'
+        document.getElementById('charcount').textContent = `${textEncoded.length} ⚠️`
+        document.getElementById('charcount').title = `Audio will be chunked, stay below ${TEXT_BYTE_LIMIT} characters for best quality`
     } else {
-        document.getElementById('charcount').style.color = 'black'
+        document.getElementById('charcount').textContent = textEncoded.length.toString()
+        document.getElementById('charcount').title = null
     }
 }
 
@@ -81,45 +83,69 @@ const submitForm = () => {
 
     let text = document.getElementById('text').value
     const textLength = new TextEncoder().encode(text).length
-    console.log(textLength)
 
-    if (textLength === 0) text = 'The fungus among us.' 
+    if (textLength === 0) text = 'The fungus among us.'
     const voice = document.getElementById('voice').value
 
-    if(voice == "none") {
+    if (voice == "none") {
         setError("No voice has been selected");
-        enableControls()
-        return
-    }
-
-    if (textLength > TEXT_BYTE_LIMIT) {
-        setError(`Text must not be over ${TEXT_BYTE_LIMIT} UTF-8 characters (currently at ${textLength})`)
         enableControls()
         return
     }
 
     try {
         const req = new XMLHttpRequest()
-        req.open('POST', `${ENDPOINT}/api/generation`, false)
+        req.open('POST', `/api/generate`, false)
         req.setRequestHeader('Content-Type', 'application/json')
         req.send(JSON.stringify({
             text: text,
-            voice: voice
+            voice: voice,
+            base64: true
         }))
 
-        let resp = JSON.parse(req.responseText)
-        if (resp.data === null) {
-            setError(`<b>Generation failed</b><br/> ("${resp.error}")`)
+        if (req.status === 200) {
+            setAudio(req.responseText, text)
         } else {
-            setAudio(resp.data, text)
-        }  
-    } catch {
+            setError(`<b>Generation failed</b><br/> ("${req.responseText}")`)
+        }
+    } catch (e) {
         setError('Error submitting form (printed to F12 console)')
-        console.log('^ Please take a screenshot of this and create an issue on the GitHub repository if one does not already exist :)')
+        console.error(e)
         console.log('If the error code is 503, the service is currently unavailable. Please try again later.')
         console.log(`Voice: ${voice}`)
         console.log(`Text: ${text}`)
     }
 
     enableControls()
+}
+
+const displayAPIHelp = () => {
+    document.getElementById('api-access-button').textContent = 'Check developer console'
+
+    console.group('API Documentation');
+
+    console.log('%cGET /api/status', 'color: blue; font-weight: bold;');
+    console.log('Description: Fetch the status of the API.');
+    console.log(`Endpoint: %cGET ${window.location.href}api/status`, 'font-style: italic;');
+    console.log('Responses:');
+    console.log('   %c200: Service is available.', 'color: green;');
+    console.log('   %cOther: Service is not available; response text is error message.', 'color: red;');
+
+    console.log('');
+
+    console.log('%cPOST /api/generate', 'color: blue; font-weight: bold;');
+    console.log('Description: Generate TTS based on provided text and voice settings.');
+    console.log(`Endpoint: %cPOST ${window.location.href}api/generate`, 'font-style: italic;');
+    console.log('Request Body (JSON):');
+    console.log('   %ctext: The text to generate TTS for (less than 300 bytes for best quality; longer texts will be chunked and quality may degrade).', 'color: black;');
+    console.log('   %cvoice: The TTS voice to use (e.g., `en_us_001`).', 'color: black;');
+    console.log('Responses:');
+    console.log('   %c200: Returns an MP3 audio in binary format with `application/octet-stream` content type.', 'color: green;');
+    console.log('   %c400: User error encountered during TTS generation; response text is error message.', 'color: red;');
+    console.log('   %c429: You have hit a request size limit! Try again after timestamp in `Retry-After` header.', 'color: red;');
+    console.log('   %c500: Error encountered during TTS generation; response text is error message.', 'color: red;');
+    console.log('   %c503: Service not available; response text is error message.', 'color: red;');
+
+
+    console.groupEnd();
 }

@@ -1,0 +1,5 @@
+/target
+.env
+/static/script.min.js
+/static/style.css
+.idea
